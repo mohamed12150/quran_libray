@@ -852,3 +852,5 @@ QuranLibrary().naskhStyle;
 MIT for code. QCF fonts are provided via Quranic Universal Library (QUL). Ensure you comply with QUL terms (and any upstream KFGQPC terms) when distributing applications that include or bundle these assets.
 
 Read more about the license [here](LICENSE).
+#   q u r a n _ l i b r a y  
+ 
