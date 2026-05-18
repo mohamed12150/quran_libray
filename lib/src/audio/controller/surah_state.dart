@@ -60,6 +60,7 @@ class SurahState {
   RxInt fileSize = 0.obs;
   RxInt downloadProgress = 0.obs;
   RxBool audioServiceInitialized = false.obs;
+  RxBool isFullSurahMode = false.obs;
   RxBool isDirectPlaying = false.obs;
   // منع إعادة الإدخال عند الانتقال التلقائي للسورة التالية
   bool surahAutoNextInProgress = false;
@@ -93,7 +94,7 @@ class SurahState {
       'https://raw.githubusercontent.com/alheekmahlib/thegarlanded/master/Photos/Packages/quran_library/quran_library_logo.jpg'
           .obs;
   RxBool isSheetOpen = false.obs;
-  RxInt get currentAudioListSurahNum => (selectedSurahIndex.value + 1).obs;
+  RxInt currentAudioListSurahNum = 1.obs;
 
   /// إيقاف جميع الاشتراكات / Cancel all subscriptions
   void cancelAllSubscriptions() {

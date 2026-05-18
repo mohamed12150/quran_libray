@@ -324,6 +324,18 @@ extension AyahCtrlExtension on AudioCtrl {
       AyahAudioStyle? ayahAudioStyle,
       AyahDownloadManagerStyle? ayahDownloadManagerStyle,
       bool? isDarkMode}) async {
+    if (state.isFullSurahMode.value) {
+      // وضع السورة الكاملة: تشغيل السورة الحالية
+      final surahNum = QuranCtrl.instance
+          .getSurahDataByAyahUQ(currentAyahUniqueNumber)
+          .surahNumber;
+      await playSurah(
+        context: context,
+        surahNumber: surahNum,
+      );
+      return;
+    }
+
     if (!await validateBeforePlayAyah) {
       ToastUtils().showToast(
           context,

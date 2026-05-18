@@ -11,4 +11,5 @@ class StorageConstants {
   static const String selectedSurahIndex = "SELECTED_SURAH_INDEX";
   static const String lastPosition = "LAST_POSITION";
   static const String audioServiceInitialized = "AUDIO_SERVICE_INITIALIZED";
+  static const String isFullSurahMode = 'IS_FULL_SURAH_MODE';
 }

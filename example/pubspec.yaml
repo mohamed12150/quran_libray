@@ -22,6 +22,17 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_launcher_icons: ^0.14.3
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "../assets/images/logo_gran.png"
+  min_sdk_android: 21
+  adaptive_icon_background: "#1B4332"
+  adaptive_icon_foreground: "../assets/images/logo_gran.png"
+  web:
+    generate: false
 
 flutter:
   uses-material-design: true

@@ -14,6 +14,31 @@ subprojects {
     project.evaluationDependsOn(":app")
 }
 
+// Force all subprojects to use compileSdkVersion 36 and handle dependency conflicts
+subprojects {
+    project.configurations.all {
+        resolutionStrategy.eachDependency { details ->
+            if (details.requested.group == 'androidx.core' && details.requested.name.contains('core') && details.requested.version == '1.16.0') {
+                details.useVersion '1.13.1'
+            }
+        }
+    }
+
+    def setSdk = { p ->
+        if (p.hasProperty('android')) {
+            p.android {
+                compileSdkVersion 36
+            }
+        }
+    }
+
+    if (project.state.executed) {
+        setSdk(project)
+    } else {
+        project.afterEvaluate { setSdk(it) }
+    }
+}
+
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }

@@ -72,7 +72,7 @@ extension SurahUi on AudioCtrl {
     // إعادة تعيين المصدر وفق القارئ الجديد بأمان
     await changeAudioSource();
 
-    update(['change_surah_reader']);
+    update(['change_surah_reader', 'change_ayah_reader']);
     if (context.mounted) {
       Navigator.of(context).pop();
     }

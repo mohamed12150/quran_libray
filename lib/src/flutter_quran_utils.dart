@@ -32,6 +32,7 @@ class QuranLibrary {
     await GetStorage.init();
     Get.put(InternetConnectionService(), permanent: true);
     Get.put(InternetConnectionController(), permanent: true);
+    Get.put(QuranApiService(), permanent: true);
 
     // تهيئة backend الصوت للويندوز قبل إنشاء أي AudioPlayer
     // Initialize Windows audio backend before constructing any AudioPlayer
@@ -72,6 +73,9 @@ class QuranLibrary {
     ];
 
     await Future.wait<void>(futures);
+
+    // جلب القراء من API mp3quran
+    await QuranApiService.instance.updateReadersFromApi();
 
     /// must be initilized after QuranCtrl, because it uses it
     AudioCtrl.instance;

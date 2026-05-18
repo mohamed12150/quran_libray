@@ -11,6 +11,8 @@ class AudioCtrl extends GetxController {
   @override
   Future<void> onInit() async {
     super.onInit();
+    state.isFullSurahMode.value =
+        state.box.read(StorageConstants.isFullSurahMode) ?? false;
     loadReaderIndex();
     await initializeSurahDownloadStatus();
     // تأكد من مزامنة حالة آيات السور مع الملفات الفعلية عند التشغيل/Hot reload
@@ -34,6 +36,10 @@ class AudioCtrl extends GetxController {
 
     ever(QuranCtrl.instance.state.currentPageNumber, (pageNumber) {
       getAyahUQNumber(pageNumber - 1);
+    });
+
+    ever(state.selectedSurahIndex, (index) {
+      state.currentAudioListSurahNum.value = index + 1;
     });
 
     state.surahsPlayList = List.generate(114, (i) {

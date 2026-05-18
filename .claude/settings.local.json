@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dart analyze *)",
+      "Bash(flutter analyze *)",
+      "Bash(flutter pub *)",
+      "Bash(python3 -c ' *)",
+      "Bash(dart --version)",
+      "Bash(where dart *)",
+      "Bash(dart run *)",
+      "Bash(gh api *)",
+      "WebFetch(domain:api.github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:github.com)",
+      "Bash(curl -s \"https://raw.githubusercontent.com/abdelrahmaan/Hadith-Data-Sets/master/All%20Hadith%20Books/Sahih%20Bukhari.csv\")",
+      "WebFetch(domain:cdn.jsdelivr.net)",
+      "Bash(curl -s \"https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-bukhari.min.json\" -o /tmp/ara-bukhari.json)",
+      "Bash(curl -s \"https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-muslim.min.json\" -o /tmp/ara-muslim.json)",
+      "Read(//tmp/**)",
+      "Read(//c//**)",
+      "Bash(curl -s \"https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-bukhari.min.json\" -o \"C:/Users/user/Desktop/quran_library/ara-bukhari.json\")",
+      "Bash(curl -s \"https://cdn.jsdelivr.net/gh/fawazahmed0/hadith-api@1/editions/ara-bukhari.json\")",
+      "Bash(python -c ' *)",
+      "Bash(node -e ' *)"
+    ]
+  }
+}

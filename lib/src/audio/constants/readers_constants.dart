@@ -10,6 +10,12 @@ class ReadersConstants {
   static const surahUrl4 = "https://server6.mp3quran.net/";
   static const surahUrl5 = "https://server11.mp3quran.net/";
 
+  /// API endpoints for mp3quran.net Quran audio services
+  static const String baseUrl = 'https://mp3quran.net/api/v3';
+  static const String reciters = '$baseUrl/reciters';
+  static const String tafsir = '$baseUrl/tafsir';
+  static const String suwar = '$baseUrl/suwar';
+
   /// قائمة القراء المخصصة (اختيارية) - يمكن للمستخدم تعيينها
   static List<ReaderInfo>? customAyahReaders;
   static List<ReaderInfo>? customSurahReaders;

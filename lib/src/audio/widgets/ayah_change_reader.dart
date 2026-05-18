@@ -71,12 +71,13 @@ class AyahChangeReader extends StatelessWidget {
         // List
         Flexible(
           child: DefaultTabController(
-            length: !kIsWeb ? 2 : 1,
+            length: !kIsWeb ? 3 : 2,
             child: Column(
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: TabBar(
+                    isScrollable: true,
                     indicatorColor: effectiveStyle.tabIndicatorColor!,
                     labelColor: effectiveStyle.tabLabelColor!,
                     unselectedLabelColor:
@@ -84,6 +85,7 @@ class AyahChangeReader extends StatelessWidget {
                     labelStyle: effectiveStyle.tabLabelStyle!,
                     tabs: [
                       Tab(text: effectiveStyle.readersTabText!),
+                      const Tab(text: 'قراء السور'),
                       if (!kIsWeb)
                         Tab(text: effectiveStyle.downloadedSurahsTabText!),
                     ],
@@ -100,6 +102,18 @@ class AyahChangeReader extends StatelessWidget {
                         itemFontSize: itemFontSize,
                         dark: dark,
                         effectiveStyle: effectiveStyle,
+                        isFullSurahMode: false,
+                      ),
+                      ReaderListBuild(
+                        selectedIndex:
+                            AudioCtrl.instance.state.surahReaderIndex.value,
+                        activeColor: activeColor,
+                        inactiveColor: inactiveColor,
+                        textColor: textColor,
+                        itemFontSize: itemFontSize,
+                        dark: dark,
+                        effectiveStyle: effectiveStyle,
+                        isFullSurahMode: true,
                       ),
                       if (!kIsWeb)
                         AyahDownloadManagerSheet(
@@ -147,16 +161,24 @@ class AyahChangeReader extends StatelessWidget {
       children: [
         GetBuilder<AudioCtrl>(
           id: 'change_ayah_reader',
-          builder: (audioCtrl) => Text(
-            ReadersConstants
-                .activeAyahReaders[audioCtrl.state.ayahReaderIndex.value]
-                .name
-                .tr,
-            style: QuranLibrary().cairoStyle.copyWith(
-                  color: textColor,
-                  fontSize: fontSize,
-                ),
-          ),
+          builder: (audioCtrl) {
+            final String readerName = audioCtrl.state.isFullSurahMode.value
+                ? ReadersConstants
+                    .activeSurahReaders[audioCtrl.state.surahReaderIndex.value]
+                    .name
+                    .tr
+                : ReadersConstants
+                    .activeAyahReaders[audioCtrl.state.ayahReaderIndex.value]
+                    .name
+                    .tr;
+            return Text(
+              readerName,
+              style: QuranLibrary().cairoStyle.copyWith(
+                    color: textColor,
+                    fontSize: fontSize,
+                  ),
+            );
+          },
         ),
         const SizedBox(width: 4),
         Semantics(
@@ -184,6 +206,7 @@ class ReaderListBuild extends StatelessWidget {
     required this.itemFontSize,
     required this.dark,
     required this.effectiveStyle,
+    required this.isFullSurahMode,
   });
 
   final int selectedIndex;
@@ -193,21 +216,26 @@ class ReaderListBuild extends StatelessWidget {
   final double itemFontSize;
   final bool dark;
   final AyahAudioStyle effectiveStyle;
+  final bool isFullSurahMode;
 
   @override
   Widget build(BuildContext context) {
+    final readers = isFullSurahMode
+        ? ReadersConstants.activeSurahReaders
+        : ReadersConstants.activeAyahReaders;
+
     return ListView.separated(
       shrinkWrap: true,
       physics: const ClampingScrollPhysics(),
-      itemCount: ReadersConstants.activeAyahReaders.length,
+      itemCount: readers.length,
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       separatorBuilder: (_, __) => Divider(
         height: 1,
         color: AppColors.getTextColor(dark).withValues(alpha: 0.08),
       ),
       itemBuilder: (context, index) {
-        final info = ReadersConstants.activeAyahReaders[index];
-        final bool isSelected = selectedIndex == info.index;
+        final info = readers[index];
+        final bool isSelected = selectedIndex == index;
         final Color itemColor = isSelected ? activeColor : inactiveColor;
 
         return Padding(
@@ -234,8 +262,22 @@ class ReaderListBuild extends StatelessWidget {
             trailing: _SelectionIndicator(
                 isSelected: isSelected,
                 color: effectiveStyle.dialogSelectedReaderColor!),
-            onTap: () async =>
-                await AudioCtrl.instance.changeAyahReadersOnTap(context, index),
+            onTap: () async {
+              if (isFullSurahMode) {
+                await AudioCtrl.instance.state.stopAllAudio();
+                AudioCtrl.instance.state.isFullSurahMode.value = true;
+                AudioCtrl.instance.state.box
+                    .write(StorageConstants.isFullSurahMode, true);
+                await AudioCtrl.instance
+                    .changeSurahReadersOnTap(context, index);
+              } else {
+                await AudioCtrl.instance.state.stopAllAudio();
+                AudioCtrl.instance.state.isFullSurahMode.value = false;
+                AudioCtrl.instance.state.box
+                    .write(StorageConstants.isFullSurahMode, false);
+                await AudioCtrl.instance.changeAyahReadersOnTap(context, index);
+              }
+            },
           ),
         );
       },

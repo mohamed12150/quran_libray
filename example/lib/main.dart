@@ -59,7 +59,8 @@ class _MyAppState extends State<MyApp> {
         // body: SingleAyah(),
         // body: SingleSurah(),
         // body: QuranPages(),
-        body: FullQuran(),
+        // body: FullQuran(),
+        body: QuranSplashScreen(isDark: false),
       ),
     );
   }

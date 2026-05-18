@@ -41,6 +41,9 @@ extension SurahCtrlExtension on AudioCtrl {
       SurahAudioStyle? style}) async {
     final isConnected = InternetConnectionController.instance.isConnected;
 
+    state.selectedSurahIndex.value = surahNumber - 1;
+    await changeAudioSource();
+
     if (!isConnected && state.isSurahDownloadedByNumber(surahNumber).value) {
       await startDownloadOrPlayExistsSurah();
     } else if (!isConnected) {
